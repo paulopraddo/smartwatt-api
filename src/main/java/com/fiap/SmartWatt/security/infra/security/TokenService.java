@@ -9,9 +9,8 @@ import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fiap.SmartWatt.security.app.exceptions.GenerationTokenException;
+import com.fiap.SmartWatt.security.app.exceptions.ValidateTokenException;
 import com.fiap.SmartWatt.security.app.model.User;
 
 @Component
@@ -30,7 +29,7 @@ public class TokenService {
                 .withExpiresAt(genExpirationDate())
                 .sign(algorithm);
             return token;
-        } catch (JWTCreationException exception) {
+        } catch (Exception e) {
             throw new GenerationTokenException("Erro na geração do token");
         }        
     }
@@ -42,8 +41,8 @@ public class TokenService {
             .withIssuer("auth-api")
             .build().verify(token)
             .getSubject();
-        } catch (JWTVerificationException exception ) {
-            return "";
+        } catch (Exception e) {
+            throw new ValidateTokenException("Erro durante a validação do token");
         }
     }
 

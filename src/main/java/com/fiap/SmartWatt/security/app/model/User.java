@@ -30,7 +30,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false, unique = false)
+    @Column(nullable = false, unique = true)
     private String login;
 
     @Column(nullable = false)
