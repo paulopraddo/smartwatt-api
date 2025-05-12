@@ -1,9 +1,16 @@
-package com.fiap.SmartWatt.security.app.exceptions;
+package com.fiap.SmartWatt.utils;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.fiap.SmartWatt.app.exceptions.ResidenciaNotFoundException;
+import com.fiap.SmartWatt.security.app.exceptions.GenerationTokenException;
+import com.fiap.SmartWatt.security.app.exceptions.InvalidCredentialsException;
+import com.fiap.SmartWatt.security.app.exceptions.InvalidUserDataException;
+import com.fiap.SmartWatt.security.app.exceptions.UserAlreadyExistsException;
+import com.fiap.SmartWatt.security.app.exceptions.ValidateTokenException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -36,6 +43,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ValidateTokenException.class)
     public ResponseEntity<String> handleTokenValidation(ValidateTokenException exception) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(ResidenciaNotFoundException.class)
+    public ResponseEntity<String> handleResidenciaNotFound(ResidenciaNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
 }

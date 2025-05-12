@@ -29,7 +29,6 @@ public class UserService {
         if (login == null || login.isBlank()) throw new InvalidUserDataException("Login obrigatório");
         if (password == null || password.isBlank()) throw new InvalidUserDataException("Senha obrigatória");
         
-        
         try {
             var usernamePassword = new UsernamePasswordAuthenticationToken(login, password);
             var auth = this.authenticationManager.authenticate(usernamePassword);
