@@ -62,12 +62,6 @@ jobs:
     if: github.ref == 'refs/heads/staging'
 
     steps:
-      - name: Debug Host Value with Ping
-        run: |
-          echo "Attempting to ping the host to verify the address..."
-          ping -c 1 ${{ secrets.STAGING_SERVER_HOST }} || true
-          echo "Finished ping attempt."
-
       - name: Conectar e fazer Deploy em Staging
         uses: appleboy/ssh-action@master
         with:
@@ -75,6 +69,7 @@ jobs:
           username: ${{ secrets.STAGING_SERVER_USER }}
           key: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
           script: |
+            mkdir -p /home/${{ secrets.STAGING_SERVER_USER }}/smartwatt
             cd /home/${{ secrets.STAGING_SERVER_USER }}/smartwatt
             echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker compose down
@@ -95,6 +90,7 @@ jobs:
           username: ${{ secrets.PROD_SERVER_USER }}
           key: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
           script: |
+            mkdir -p /home/${{ secrets.PROD_SERVER_USER }}/smartwatt
             cd /home/${{ secrets.PROD_SERVER_USER }}/smartwatt
             echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker compose down
