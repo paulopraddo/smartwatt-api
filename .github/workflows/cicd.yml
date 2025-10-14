@@ -62,6 +62,12 @@ jobs:
     if: github.ref == 'refs/heads/staging'
 
     steps:
+      - name: Debug Host Value with Ping
+        run: |
+          echo "Attempting to ping the host to verify the address..."
+          ping -c 1 ${{ secrets.STAGING_SERVER_HOST }} || true
+          echo "Finished ping attempt."
+
       - name: Conectar e fazer Deploy em Staging
         uses: appleboy/ssh-action@master
         with:
